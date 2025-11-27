@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { EffectGrid } from './components/EffectGrid';
+import { Documentation } from './components/Documentation';
 import { 
   Zap, 
   Flower, 
@@ -12,6 +13,7 @@ import {
   X
 } from 'lucide-react';
 import { EffectCategory } from './types';
+import { CODE_SNIPPETS } from './components/codeSnippets';
 
 // Import effect components
 import * as FlowerButtons from './components/effects/FlowerButtons';
@@ -22,6 +24,7 @@ import * as StarButtons from './components/effects/StarEffects';
 
 const App: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('particle');
+  const [view, setView] = useState<'preview' | 'docs'>('preview');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const categories: EffectCategory[] = [
@@ -31,10 +34,10 @@ const App: React.FC = () => {
       icon: <Atom className="w-5 h-5" />,
       description: 'DNA helix, atomic orbits, particle streams, vortex swirls.',
       components: [
-        { id: 'p1', name: 'Atomic Orbit', component: ParticleButtons.AtomicOrbitButton },
-        { id: 'p2', name: 'Quantum Pulse', component: ParticleButtons.QuantumPulseButton },
-        { id: 'p3', name: 'Neon Vortex', component: ParticleButtons.NeonVortexButton },
-        { id: 'p4', name: 'Data Stream', component: ParticleButtons.DataStreamButton },
+        { id: 'p1', name: 'Atomic Orbit', component: ParticleButtons.AtomicOrbitButton, code: CODE_SNIPPETS.p1 },
+        { id: 'p2', name: 'Quantum Pulse', component: ParticleButtons.QuantumPulseButton, code: CODE_SNIPPETS.p2 },
+        { id: 'p3', name: 'Neon Vortex', component: ParticleButtons.NeonVortexButton, code: CODE_SNIPPETS.p3 },
+        { id: 'p4', name: 'Data Stream', component: ParticleButtons.DataStreamButton, code: CODE_SNIPPETS.p4 },
       ]
     },
     {
@@ -43,9 +46,9 @@ const App: React.FC = () => {
       icon: <Flower className="w-5 h-5" />,
       description: 'Cherry blossoms, vine growth, petal rain, blooming animations.',
       components: [
-        { id: 'f1', name: 'Sakura Bloom', component: FlowerButtons.SakuraBloomButton },
-        { id: 'f2', name: 'Neon Lotus', component: FlowerButtons.NeonLotusButton },
-        { id: 'f3', name: 'Vine Growth', component: FlowerButtons.VineGrowthButton },
+        { id: 'f1', name: 'Sakura Bloom', component: FlowerButtons.SakuraBloomButton, code: CODE_SNIPPETS.f1 },
+        { id: 'f2', name: 'Neon Lotus', component: FlowerButtons.NeonLotusButton, code: CODE_SNIPPETS.f2 },
+        { id: 'f3', name: 'Vine Growth', component: FlowerButtons.VineGrowthButton, code: CODE_SNIPPETS.f3 },
       ]
     },
     {
@@ -54,9 +57,9 @@ const App: React.FC = () => {
       icon: <PartyPopper className="w-5 h-5" />,
       description: 'Glass shatter, liquid splash, firework bursts, balloon pops.',
       components: [
-        { id: 'c1', name: 'Cyber Burst', component: ConfettiButtons.CyberBurstButton },
-        { id: 'c2', name: 'Glass Shatter', component: ConfettiButtons.GlassShatterButton },
-        { id: 'c3', name: 'Pixel Rain', component: ConfettiButtons.PixelRainButton },
+        { id: 'c1', name: 'Cyber Burst', component: ConfettiButtons.CyberBurstButton, code: CODE_SNIPPETS.c1 },
+        { id: 'c2', name: 'Glass Shatter', component: ConfettiButtons.GlassShatterButton, code: CODE_SNIPPETS.c2 },
+        { id: 'c3', name: 'Pixel Rain', component: ConfettiButtons.PixelRainButton, code: CODE_SNIPPETS.c3 },
       ]
     },
     {
@@ -65,9 +68,9 @@ const App: React.FC = () => {
       icon: <Heart className="w-5 h-5" />,
       description: 'Morphing hearts, EKG monitors, heart explosions.',
       components: [
-        { id: 'h1', name: 'Digital Pulse', component: HeartButtons.DigitalPulseButton },
-        { id: 'h2', name: 'Love Circuit', component: HeartButtons.LoveCircuitButton },
-        { id: 'h3', name: 'Hologram Heart', component: HeartButtons.HologramHeartButton },
+        { id: 'h1', name: 'Digital Pulse', component: HeartButtons.DigitalPulseButton, code: CODE_SNIPPETS.h1 },
+        { id: 'h2', name: 'Love Circuit', component: HeartButtons.LoveCircuitButton, code: CODE_SNIPPETS.h2 },
+        { id: 'h3', name: 'Hologram Heart', component: HeartButtons.HologramHeartButton, code: CODE_SNIPPETS.h3 },
       ]
     },
     {
@@ -76,9 +79,9 @@ const App: React.FC = () => {
       icon: <Star className="w-5 h-5" />,
       description: 'Supernova, galaxy spirals, shooting stars, pulsar beacons.',
       components: [
-        { id: 's1', name: 'Supernova', component: StarButtons.SupernovaButton },
-        { id: 's2', name: 'Constellation', component: StarButtons.ConstellationButton },
-        { id: 's3', name: 'Warp Speed', component: StarButtons.WarpSpeedButton },
+        { id: 's1', name: 'Supernova', component: StarButtons.SupernovaButton, code: CODE_SNIPPETS.s1 },
+        { id: 's2', name: 'Constellation', component: StarButtons.ConstellationButton, code: CODE_SNIPPETS.s2 },
+        { id: 's3', name: 'Warp Speed', component: StarButtons.WarpSpeedButton, code: CODE_SNIPPETS.s3 },
       ]
     },
   ];
@@ -121,6 +124,7 @@ const App: React.FC = () => {
           activeCategory={activeCategory} 
           onSelectCategory={(id) => {
             setActiveCategory(id);
+            setView('preview');
             setIsMobileMenuOpen(false);
           }} 
         />
@@ -145,7 +149,12 @@ const App: React.FC = () => {
           </button>
           
           <div className="flex items-center gap-4 ml-auto">
-             <a href="#" className="hidden sm:block text-sm text-slate-400 hover:text-cyan-400 transition-colors">Documentation</a>
+             <button 
+               onClick={() => setView('docs')}
+               className={`hidden sm:block text-sm transition-colors ${view === 'docs' ? 'text-cyan-400 font-medium' : 'text-slate-400 hover:text-cyan-400'}`}
+             >
+               Documentation
+             </button>
              <a href="#" className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-sm font-medium rounded-full transition-all border border-slate-700">
                Get Full Access
              </a>
@@ -155,28 +164,34 @@ const App: React.FC = () => {
         {/* Content Scroll Area */}
         <main className="flex-1 overflow-y-auto p-6 lg:p-10 relative">
           <div className="max-w-6xl mx-auto">
-            <div className="mb-10">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="p-2 rounded-lg bg-slate-800 text-cyan-400">
-                  {activeCategoryData.icon}
-                </span>
-                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                  {activeCategoryData.name}
-                </h2>
-              </div>
-              <p className="text-slate-400 text-lg max-w-2xl">
-                {activeCategoryData.description}
-              </p>
-            </div>
+            {view === 'preview' ? (
+              <>
+                <div className="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="p-2 rounded-lg bg-slate-800 text-cyan-400">
+                      {activeCategoryData.icon}
+                    </span>
+                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                      {activeCategoryData.name}
+                    </h2>
+                  </div>
+                  <p className="text-slate-400 text-lg max-w-2xl">
+                    {activeCategoryData.description}
+                  </p>
+                </div>
 
-            <EffectGrid components={activeCategoryData.components} />
-            
-            <div className="mt-20 py-10 border-t border-slate-800 text-center">
-               <p className="text-slate-600 mb-4">Want to see the other 85+ effects?</p>
-               <button className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-lg shadow-lg shadow-cyan-500/20 transition-all transform hover:scale-105">
-                 Purchase Full Library
-               </button>
-            </div>
+                <EffectGrid components={activeCategoryData.components} />
+                
+                <div className="mt-20 py-10 border-t border-slate-800 text-center">
+                   <p className="text-slate-600 mb-4">Want to see the other 85+ effects?</p>
+                   <button className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-lg shadow-lg shadow-cyan-500/20 transition-all transform hover:scale-105">
+                     Purchase Full Library
+                   </button>
+                </div>
+              </>
+            ) : (
+              <Documentation />
+            )}
           </div>
         </main>
         

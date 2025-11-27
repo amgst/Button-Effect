@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Copy, Check } from 'lucide-react';
 
 interface ButtonWrapperProps {
   children: React.ReactNode;
   title: string;
   description: string;
   delay?: number;
+  code?: string;
 }
 
-export const ButtonWrapper: React.FC<ButtonWrapperProps> = ({ children, title, description, delay = 0 }) => {
+export const ButtonWrapper: React.FC<ButtonWrapperProps> = ({ children, title, description, delay = 0, code }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (code) {
+      navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -21,6 +33,18 @@ export const ButtonWrapper: React.FC<ButtonWrapperProps> = ({ children, title, d
       {/* Canvas Area */}
       <div className="h-48 flex items-center justify-center relative bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
         <div className="absolute inset-0 bg-slate-900/80" />
+        
+        {/* Copy Button */}
+        {code && (
+          <button 
+            onClick={handleCopy}
+            className="absolute top-4 right-4 p-2 rounded-lg bg-slate-900/50 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-cyan-400 transition-all z-20 backdrop-blur-sm opacity-0 group-hover:opacity-100"
+            title="Copy Source Code"
+          >
+            {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+          </button>
+        )}
+
         <div className="relative z-10 scale-125">
           {children}
         </div>

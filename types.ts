@@ -13,6 +13,7 @@ export interface ButtonEffectComponent {
   name: string;
   component: React.ComponentType<{}>;
   description?: string;
+  code?: string;
 }
 
 export enum ThemeColor {

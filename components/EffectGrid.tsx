@@ -15,6 +15,7 @@ export const EffectGrid: React.FC<EffectGridProps> = ({ components }) => {
           title={item.name} 
           description={item.description || "Click to trigger animation"}
           delay={index * 0.1}
+          code={item.code}
         >
           <item.component />
         </ButtonWrapper>
